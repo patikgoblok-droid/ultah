@@ -2,587 +2,148 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>Kartu Ucapan Ulang Tahun - Spesial Untukmu</title>
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <!-- Font Awesome Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kartu Ucapan Ultah - Dengan Tombol Suara</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
+    /* style minimal untuk contoh */
     body {
-      min-height: 100vh;
-      background: linear-gradient(145deg, #fce4d6 0%, #ffe6f0 100%);
+      background: linear-gradient(145deg, #fce4d6, #ffe6f0);
       font-family: 'Quicksand', sans-serif;
       display: flex;
       justify-content: center;
       align-items: center;
+      min-height: 100vh;
       padding: 20px;
-      position: relative;
-      overflow-x: hidden;
     }
-
-    /* Bintang background */
-    .stars {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    .star {
-      position: absolute;
-      background-color: #ffdf7e;
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      opacity: 0.6;
-      animation: twinkle 2s infinite alternate;
-    }
-
-    @keyframes twinkle {
-      0% { opacity: 0.2; transform: scale(0.8);}
-      100% { opacity: 1; transform: scale(1.2);}
-    }
-
-    /* Kartu utama */
-    .card-container {
-      position: relative;
-      z-index: 10;
-      max-width: 750px;
-      width: 100%;
-      perspective: 1200px;
-    }
-
     .card {
-      background: #fffef7;
-      border-radius: 55px 55px 55px 35px;
-      box-shadow: 0 30px 45px rgba(0, 0, 0, 0.2), 0 8px 18px rgba(0, 0, 0, 0.1);
-      overflow: hidden;
-      transition: transform 0.4s ease, box-shadow 0.3s;
-      animation: float 5s infinite ease-in-out;
-    }
-
-    @keyframes float {
-      0% { transform: translateY(0px); }
-      50% { transform: translateY(-10px); }
-      100% { transform: translateY(0px); }
-    }
-
-    .card:hover {
-      transform: scale(1.01);
-      box-shadow: 0 40px 55px rgba(0, 0, 0, 0.25);
-    }
-
-    /* Header dengan kue dan balon */
-    .hero {
-      background: linear-gradient(135deg, #ffb347, #ff8c42);
-      padding: 35px 25px 45px;
-      text-align: center;
-      color: white;
-      position: relative;
-      clip-path: polygon(0 0, 100% 0, 100% 88%, 0 100%);
-    }
-
-    .hero i {
-      font-size: 4rem;
-      filter: drop-shadow(2px 4px 12px rgba(0,0,0,0.2));
-      margin: 0 10px;
-    }
-
-    .hero h1 {
-      font-family: 'Dancing Script', cursive;
-      font-size: 3rem;
-      font-weight: 700;
-      margin: 15px 0 5px;
-      text-shadow: 3px 3px 0 #c13b00;
-      letter-spacing: 2px;
-    }
-
-    .hero p {
-      font-size: 1.2rem;
-      font-weight: 600;
-      background: rgba(255,255,240,0.25);
-      display: inline-block;
-      padding: 5px 20px;
+      background: white;
       border-radius: 40px;
-      backdrop-filter: blur(3px);
-    }
-
-    /* Badan kartu */
-    .card-body {
-      padding: 35px 30px 30px;
-    }
-
-    .nama-keramat {
+      padding: 30px;
+      max-width: 500px;
       text-align: center;
-      font-size: 2rem;
-      font-weight: 700;
-      font-family: 'Dancing Script', cursive;
-      color: #c13b00;
-      margin-bottom: 20px;
-      border-bottom: 3px dashed #ffc89c;
+      box-shadow: 0 20px 30px rgba(0,0,0,0.2);
+    }
+    .clickable-media {
+      margin: 20px auto;
+      cursor: pointer;
+      transition: transform 0.2s;
       display: inline-block;
-      width: auto;
-      padding-bottom: 8px;
-      letter-spacing: 1px;
     }
-
-    /* ========= GAMBAR DI TENGAH ========= */
-    .gambar-tengah {
-      text-align: center;
-      margin: 15px 0 25px 0;
-      position: relative;
+    .clickable-media:active {
+      transform: scale(0.97);
     }
-
-    .birthday-image {
-      max-width: 100%;
-      height: auto;
-      border-radius: 35px;
-      box-shadow: 0 15px 25px rgba(0, 0, 0, 0.15);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      border: 4px solid #fff9e8;
-      background: #ffe0b5;
-      width: 280px;
-      object-fit: cover;
-    }
-
-    /* efek hover pada gambar */
-    .birthday-image:hover {
-      transform: scale(1.02) rotate(1deg);
-      box-shadow: 0 20px 35px rgba(0, 0, 0, 0.2);
-    }
-
-    /* caption gambar */
-    .caption-gambar {
-      margin-top: 10px;
-      font-size: 0.85rem;
-      color: #e67e22;
-      font-weight: 600;
-      background: rgba(255, 245, 220, 0.8);
-      display: inline-block;
-      padding: 4px 15px;
+    img, video {
+      width: 100%;
+      max-width: 300px;
       border-radius: 30px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+      border: 3px solid #ffb347;
     }
-
-    .ucapan {
-      background: #fffaec;
-      padding: 20px 25px;
-      border-radius: 45px;
-      box-shadow: inset 0 0 0 2px #fff8e7, 0 8px 18px rgba(0,0,0,0.05);
-      margin: 20px 0;
-    }
-
-    .ucapan p {
-      font-size: 1.1rem;
-      line-height: 1.65;
-      color: #4b2e1a;
-      font-weight: 500;
-      margin-bottom: 15px;
-    }
-
-    .ucapan .quote {
-      font-style: italic;
-      font-size: 1rem;
-      text-align: right;
-      color: #e67e22;
-      border-top: 1px solid #ffddb0;
-      padding-top: 12px;
-      margin-top: 8px;
-    }
-
-    .doa {
-      background: linear-gradient(120deg, #fff3e0, #fff8ef);
-      border-radius: 35px;
-      padding: 18px 20px;
-      margin-top: 15px;
-      text-align: center;
-      font-weight: 600;
-      color: #a5571e;
-      font-size: 0.95rem;
-      border-left: 10px solid #ffaa55;
-    }
-
-    .doa i {
-      margin-right: 8px;
-      color: #ff8c42;
-    }
-
-    /* Tombol kejutan */
-    .tombol-kejutan {
-      display: flex;
-      justify-content: center;
-      margin: 25px 0 15px;
-    }
-
-    .btn-surprise {
+    button {
       background: #ff7e5e;
       border: none;
-      padding: 14px 28px;
-      font-size: 1.1rem;
-      font-weight: bold;
+      padding: 12px 25px;
+      border-radius: 50px;
       color: white;
-      border-radius: 60px;
-      cursor: pointer;
-      transition: 0.2s;
-      box-shadow: 0 5px 0 #b13e1f;
-      font-family: 'Quicksand', sans-serif;
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .btn-surprise:active {
-      transform: translateY(2px);
-      box-shadow: 0 2px 0 #b13e1f;
-    }
-
-    .btn-surprise i {
-      font-size: 1.3rem;
-    }
-
-    /* area efek confetti & balon */
-    .kejutan-area {
-      background: rgba(255,241,209,0.7);
-      border-radius: 48px;
-      padding: 12px 15px;
-      margin-top: 10px;
-      text-align: center;
-      font-size: 0.9rem;
-      font-weight: 500;
-      transition: all 0.3s;
-    }
-
-    .kejutan-message {
-      color: #d45a1f;
       font-weight: bold;
+      margin-top: 15px;
+      cursor: pointer;
     }
-
-    /* balon animasi */
-    @keyframes bounceUp {
-      0% { transform: translateY(0) scale(0.3); opacity: 0; }
-      50% { transform: translateY(-20px) scale(1.1); opacity: 0.9; }
-      100% { transform: translateY(-80px) scale(1); opacity: 0; }
-    }
-
-    .balloon-effect {
-      position: fixed;
-      bottom: -50px;
-      font-size: 2.2rem;
-      pointer-events: none;
-      z-index: 999;
-      animation: bounceUp 2s ease-out forwards;
-    }
-
-    /* Footer */
-    .footer-card {
-      background: #ffe0b5;
-      padding: 15px;
-      text-align: center;
-      font-size: 0.8rem;
-      color: #b45f2b;
-      font-weight: 600;
-    }
-
-    /* Responsive */
-    @media (max-width: 550px) {
-      .hero h1 {
-        font-size: 2.2rem;
-      }
-      .card-body {
-        padding: 25px 20px;
-      }
-      .ucapan p {
-        font-size: 1rem;
-      }
-      .nama-keramat {
-        font-size: 1.6rem;
-      }
-      .birthday-image {
-        width: 220px;
-      }
-    }
-
-    /* Confetti canvas */
-    #confetti-canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 1000;
+    .info {
+      margin-top: 20px;
+      font-size: 14px;
+      color: #a5571e;
     }
   </style>
 </head>
 <body>
+<div class="card">
+  <h2>🎂 Selamat Ulang Tahun! 🎉</h2>
+  <p>Klik gambar atau video di bawah ini untuk mendengar ucapan spesial!</p>
 
-<div class="stars" id="stars-container"></div>
-<canvas id="confetti-canvas"></canvas>
-
-<div class="card-container">
-  <div class="card">
-    <div class="hero">
-      <i class="fas fa-birthday-cake"></i>
-      <i class="fas fa-balloon"></i>
-      <i class="fas fa-gift"></i>
-      <h1>Happy Birthday!</h1>
-      <p>🎉 Selamat Ulang Tahun 🎂</p>
-    </div>
-    <div class="card-body">
-      <div style="text-align: center;">
-        <span class="nama-keramat">✨ Untukmu yang Istimewa ✨</span>
-      </div>
-      
-      <!-- ====== GAMBAR DI TENGAH KARTU ====== -->
-      <div class="gambar-tengah">
-        <img class="birthday-image" 
-             src="https://i.pinimg.com/564x/4e/2a/1b/4e2a1b3c5c2b5a1e2d4f6a8b9c0d1e2f.jpg" 
-             alt="Ilustrasi Ulang Tahun"
-             onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/3176/3176366.png';">
-        <div class="caption-gambar">
-          <i class="fas fa-camera"></i> Spesial untukmu hari ini!
-        </div>
-      </div>
-      
-      <div class="ucapan">
-        <p>💖 Hai, <strong>sahabat/keluarga tersayang</strong>! 💖</p>
-        <p>Di hari yang spesial ini, semoga setiap detik dipenuhi tawa, cinta, dan keberkahan. Terima kasih telah menjadi bagian cerita yang indah. Semoga tahun ini membawa seribu kebahagiaan, mimpi-mimpi yang tercapai, dan kesehatan selalu menyertaimu.</p>
-        <p>🌟 <strong>Selamat Ulang Tahun!</strong> 🌟 Jangan pernah berhenti bersinar, karena dunia butuh cahayamu. 🎂🥳</p>
-        <div class="quote">
-          <i class="fas fa-heart" style="color:#ff6b6b;"></i> "Semoga semua harapan dan doa baik menyertai langkahmu"
-        </div>
-      </div>
-      <div class="doa">
-        <i class="fas fa-hands-praying"></i> Doa spesial: Panjang umur, bahagia selalu, sukses dalam segala hal, dan dikelilingi orang-orang yang tulus mencintaimu. 🕯️🎁
-      </div>
-      <div class="tombol-kejutan">
-        <button class="btn-surprise" id="surpriseBtn">
-          <i class="fas fa-grin-tongue-squint"></i> Klik Kejutan Spesial!
-          <i class="fas fa-confetti"></i>
-        </button>
-      </div>
-      <div class="kejutan-area" id="surpriseArea">
-        <span id="surpriseText">🎈 Tekan tombol di atas untuk merayakan! 🎈</span>
-      </div>
-    </div>
-    <div class="footer-card">
-      <i class="fas fa-crown"></i> Dikemas dengan penuh cinta untuk hari bahagiamu <i class="fas fa-smile-wink"></i>
-    </div>
+  <!-- Area gambar/video yang bisa diklik dan bersuara -->
+  <div class="clickable-media" id="soundTrigger">
+    <!-- GAMBAR: bisa ganti dengan video jika punya file video -->
+    <img src="https://cdn-icons-png.flaticon.com/512/3176/3176366.png" alt="Kue Ultah" id="clickableImg">
+    <!-- Jika ingin pakai video dari TikTok, simpan videonya dulu lalu ganti src di bawah -->
+    <!-- <video id="clickableVideo" width="300" controls>
+      <source src="video_ultah.mp4" type="video/mp4">
+    </video> -->
   </div>
+
+  <button id="playSoundBtn">🔊 Klik untuk dengar suara</button>
+  <div class="info">✨ Suara "Happy Birthday" singkat akan diputar ✨</div>
 </div>
 
 <script>
-  // ==================== Efek Bintang Background ====================
-  function createStars() {
-    const starsContainer = document.getElementById('stars-container');
-    const starCount = 150;
-    for (let i = 0; i < starCount; i++) {
-      const star = document.createElement('div');
-      star.classList.add('star');
-      const size = Math.random() * 5 + 2;
-      star.style.width = `${size}px`;
-      star.style.height = `${size}px`;
-      star.style.left = `${Math.random() * 100}%`;
-      star.style.top = `${Math.random() * 100}%`;
-      star.style.animationDelay = `${Math.random() * 3}s`;
-      star.style.animationDuration = `${Math.random() * 2 + 1.5}s`;
-      starsContainer.appendChild(star);
-    }
-  }
-  createStars();
-
-  // ==================== Confetti + Balon Kejutan ====================
-  const canvas = document.getElementById('confetti-canvas');
-  let ctx = canvas.getContext('2d');
-  let animationId = null;
-  let particles = [];
-  let activeConfetti = false;
-
-  function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-  }
-  window.addEventListener('resize', resizeCanvas);
-  resizeCanvas();
-
-  class ConfettiParticle {
-    constructor() {
-      this.x = Math.random() * canvas.width;
-      this.y = Math.random() * canvas.height - canvas.height;
-      this.size = Math.random() * 8 + 3;
-      this.speedY = Math.random() * 5 + 3;
-      this.speedX = (Math.random() - 0.5) * 3;
-      this.color = `hsl(${Math.random() * 360}, 80%, 60%)`;
-      this.rotation = Math.random() * 360;
-      this.rotSpeed = (Math.random() - 0.5) * 10;
-      this.shape = Math.floor(Math.random() * 3);
-    }
-    update() {
-      this.y += this.speedY;
-      this.x += this.speedX;
-      this.rotation += this.rotSpeed;
-      if (this.y > canvas.height + 50 || this.x < -50 || this.x > canvas.width + 50) {
-        return false;
-      }
-      return true;
-    }
-    draw(ctx) {
-      ctx.save();
-      ctx.translate(this.x, this.y);
-      ctx.rotate(this.rotation * Math.PI / 180);
-      ctx.fillStyle = this.color;
-      if (this.shape === 0) {
-        ctx.fillRect(-this.size/2, -this.size/2, this.size, this.size);
-      } else if (this.shape === 1) {
-        ctx.beginPath();
-        ctx.arc(0, 0, this.size/2, 0, Math.PI*2);
-        ctx.fill();
-      } else {
-        ctx.beginPath();
-        ctx.moveTo(0, -this.size/2);
-        ctx.lineTo(this.size/2, this.size/2);
-        ctx.lineTo(-this.size/2, this.size/2);
-        ctx.fill();
-      }
-      ctx.restore();
-    }
-  }
-
-  function startConfetti(duration = 2500) {
-    if (activeConfetti) {
-      if (animationId) cancelAnimationFrame(animationId);
-      particles = [];
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-    }
-    activeConfetti = true;
-    const particleCount = 200;
-    for (let i = 0; i < particleCount; i++) {
-      particles.push(new ConfettiParticle());
-    }
-    function animateConfetti() {
-      if (!activeConfetti) return;
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      for (let i = particles.length-1; i >= 0; i--) {
-        const alive = particles[i].update();
-        particles[i].draw(ctx);
-        if (!alive) {
-          particles.splice(i,1);
-        }
-      }
-      if (particles.length > 0) {
-        animationId = requestAnimationFrame(animateConfetti);
-      } else {
-        activeConfetti = false;
-        cancelAnimationFrame(animationId);
-        animationId = null;
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-      }
-    }
-    animateConfetti();
-    setTimeout(() => {}, duration);
-  }
-
-  function createFloatingBalloons(count = 25) {
-    for(let i = 0; i < count; i++) {
-      const balloon = document.createElement('div');
-      balloon.classList.add('balloon-effect');
-      const emojis = ['🎈', '🎂', '🎉', '✨', '🎁', '🥳', '🎊', '💖', '🕯️', '🌸', '🎀'];
-      balloon.innerText = emojis[Math.floor(Math.random() * emojis.length)];
-      balloon.style.left = Math.random() * 100 + '%';
-      balloon.style.fontSize = (Math.random() * 22 + 18) + 'px';
-      balloon.style.animationDuration = (Math.random() * 1.5 + 1.2) + 's';
-      balloon.style.animationDelay = `${Math.random() * 0.4}s`;
-      document.body.appendChild(balloon);
+  // Fungsi membuat bunyi (menggunakan Web Audio API atau Audio context)
+  function playBirthdaySound() {
+    // Cara 1: Memutar file suara online (pastikan file .mp3 tersedia)
+    // Ganti URL berikut dengan file suara "happy birthday" pilihan Anda.
+    const audio = new Audio('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3');
+    // Atau pakai file suara pendek happy birthday dari link yang valid.
+    // Karena tidak ada file suara spesifik, kita buat suara "beep" + synth bass sederhana.
+    
+    // Alternatif: menggunakan Web Audio API untuk membuat nada bahagia
+    try {
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      const ctx = new AudioContext();
+      const now = ctx.currentTime;
+      
+      // Nada: C - D - E - C (do re mi do)
+      const freqs = [261.63, 293.66, 329.63, 261.63];
+      const durations = [0.4, 0.4, 0.4, 0.8];
+      
+      freqs.forEach((freq, idx) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.frequency.value = freq;
+        gain.gain.value = 0.3;
+        osc.start(now + idx * 0.5);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + idx * 0.5 + durations[idx]);
+        osc.stop(now + idx * 0.5 + durations[idx]);
+      });
+      
+      // Irama tambahan (do re mi fa sol)
       setTimeout(() => {
-        balloon.remove();
-      }, 2200);
+        const osc2 = ctx.createOscillator();
+        const gain2 = ctx.createGain();
+        osc2.connect(gain2);
+        gain2.connect(ctx.destination);
+        osc2.frequency.value = 392.00; // G
+        gain2.gain.value = 0.2;
+        osc2.start();
+        gain2.gain.exponentialRampToValueAtTime(0.0001, now + 2.2);
+        osc2.stop(now + 2.2);
+      }, 1800);
+      
+    } catch(e) {
+      console.log("Web Audio tidak didukung, fallback ke beep");
+      // Fallback sederhana
+      const beep = new Audio();
+      beep.src = "data:audio/wav;base64,U3RlYWx0aCB... (tidak praktis)";
+      alert("🔊 Selamat Ulang Tahun! (Suara tidak bisa diputar, tapi semangat tetap ada!)");
     }
   }
-
-  function showSurprise() {
-    startConfetti(3000);
-    createFloatingBalloons(40);
-    
-    const surpriseArea = document.getElementById('surpriseArea');
-    const surpriseTextSpan = document.getElementById('surpriseText');
-    if (surpriseTextSpan) {
-      surpriseTextSpan.innerHTML = '🎉✨ SELAMAT ULANG TAHUN!! ✨🎉 <br> 🥳 Semoga semua impianmu menjadi nyata! 🥳 <br> 🎂 Nikmati hari spesialmu dengan penuh cinta dan tawa! 🎈';
-      surpriseTextSpan.style.fontWeight = 'bold';
-      surpriseTextSpan.style.fontSize = '1rem';
-      surpriseTextSpan.style.display = 'block';
-      surpriseTextSpan.style.padding = '8px';
-    }
-    
-    const btn = document.getElementById('surpriseBtn');
-    btn.style.transform = 'scale(0.98)';
-    setTimeout(() => { btn.style.transform = ''; }, 200);
-    
-    for (let i=0;i<12;i++) {
-      setTimeout(() => {
-        const floatMsg = document.createElement('div');
-        const messages = ['🎂 HBD!', '🥳 Best Day!', '🎈 Hore!', '💕 Love!', '✨ Bahagia', '🎊 Yay!', '🥂 Cheers', '🌟 Shine!', '🎁 Special Gift!', '💝 You Are Loved'];
-        floatMsg.innerText = messages[Math.floor(Math.random() * messages.length)];
-        floatMsg.style.position = 'fixed';
-        floatMsg.style.bottom = '40%';
-        floatMsg.style.left = Math.random() * 80 + 10 + '%';
-        floatMsg.style.fontSize = '1.6rem';
-        floatMsg.style.fontWeight = 'bold';
-        floatMsg.style.color = '#ff6b4a';
-        floatMsg.style.textShadow = '0 0 5px white';
-        floatMsg.style.zIndex = '1001';
-        floatMsg.style.pointerEvents = 'none';
-        floatMsg.style.opacity = '1';
-        floatMsg.style.transition = 'all 1.8s ease-out';
-        floatMsg.style.fontFamily = "'Dancing Script', cursive";
-        document.body.appendChild(floatMsg);
-        setTimeout(() => {
-          floatMsg.style.opacity = '0';
-          floatMsg.style.transform = 'translateY(-100px)';
-          setTimeout(() => floatMsg.remove(), 1800);
-        }, 100);
-      }, i*100);
-    }
-    
-    document.body.style.transition = 'background 0.6s';
-    document.body.style.background = 'radial-gradient(circle at 30% 10%, #ffe6b3, #ffccaa)';
-    setTimeout(() => {
-      document.body.style.background = 'linear-gradient(145deg, #fce4d6 0%, #ffe6f0 100%)';
-    }, 1800);
-  }
-
-  const surpriseBtn = document.getElementById('surpriseBtn');
-  surpriseBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    showSurprise();
-    if (navigator.vibrate) navigator.vibrate(200);
-  });
-
-  window.addEventListener('load', () => {
-    setTimeout(() => {
-      createFloatingBalloons(15);
-      startConfetti(1200);
-    }, 500);
+  
+  // Event klik pada gambar/video
+  const triggerArea = document.getElementById('soundTrigger');
+  triggerArea.addEventListener('click', () => {
+    playBirthdaySound();
+    // Efek animasi visual
+    const img = document.getElementById('clickableImg');
+    img.style.transform = 'scale(0.95)';
+    setTimeout(() => img.style.transform = '', 200);
   });
   
-  surpriseBtn.title = "Tekan untuk merayakan ulang tahun dengan gemerlap!";
+  // Tombol kedua juga memainkan suara
+  document.getElementById('playSoundBtn').addEventListener('click', playBirthdaySound);
   
-  // Menangani error gambar jika URL tidak bisa di-load, fallback ke ilustrasi cantik dari CDN
-  const birthdayImg = document.querySelector('.birthday-image');
-  if (birthdayImg) {
-    birthdayImg.addEventListener('error', function() {
-      this.src = 'https://cdn-icons-png.flaticon.com/512/3176/3176366.png';
-      this.alt = 'Gambar Ulang Tahun Alternatif';
-    });
-  }
+  // Catatan: Jika Anda ingin menggunakan video TikTok yang sudah di-download, 
+  // ganti tag <img> dengan <video> dan tambahkan autoplay? Tidak disarankan autoplay suara.
+  // Untuk video, Anda bisa atur controls dan tetap bisa klik area untuk memutar suara terpisah.
 </script>
 </body>
 </html>
