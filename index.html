@@ -1,149 +1,908 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kartu Ucapan Ultah - Dengan Tombol Suara</title>
-  <style>
-    /* style minimal untuk contoh */
-    body {
-      background: linear-gradient(145deg, #fce4d6, #ffe6f0);
-      font-family: 'Quicksand', sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      padding: 20px;
-    }
-    .card {
-      background: white;
-      border-radius: 40px;
-      padding: 30px;
-      max-width: 500px;
-      text-align: center;
-      box-shadow: 0 20px 30px rgba(0,0,0,0.2);
-    }
-    .clickable-media {
-      margin: 20px auto;
-      cursor: pointer;
-      transition: transform 0.2s;
-      display: inline-block;
-    }
-    .clickable-media:active {
-      transform: scale(0.97);
-    }
-    img, video {
-      width: 100%;
-      max-width: 300px;
-      border-radius: 30px;
-      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-      border: 3px solid #ffb347;
-    }
-    button {
-      background: #ff7e5e;
-      border: none;
-      padding: 12px 25px;
-      border-radius: 50px;
-      color: white;
-      font-weight: bold;
-      margin-top: 15px;
-      cursor: pointer;
-    }
-    .info {
-      margin-top: 20px;
-      font-size: 14px;
-      color: #a5571e;
-    }
-  </style>
-</head>
-<body>
-<div class="card">
-  <h2>🎂 Selamat Ulang Tahun! 🎉</h2>
-  <p>Klik gambar atau video di bawah ini untuk mendengar ucapan spesial!</p>
-
-  <!-- Area gambar/video yang bisa diklik dan bersuara -->
-  <div class="clickable-media" id="soundTrigger">
-    <!-- GAMBAR: bisa ganti dengan video jika punya file video -->
-    <img src="https://cdn-icons-png.flaticon.com/512/3176/3176366.png" alt="Kue Ultah" id="clickableImg">
-    <!-- Jika ingin pakai video dari TikTok, simpan videonya dulu lalu ganti src di bawah -->
-    <!-- <video id="clickableVideo" width="300" controls>
-      <source src="video_ultah.mp4" type="video/mp4">
-    </video> -->
-  </div>
-
-  <button id="playSoundBtn">🔊 Klik untuk dengar suara</button>
-  <div class="info">✨ Suara "Happy Birthday" singkat akan diputar ✨</div>
-</div>
-
-<script>
-  // Fungsi membuat bunyi (menggunakan Web Audio API atau Audio context)
-  function playBirthdaySound() {
-    // Cara 1: Memutar file suara online (pastikan file .mp3 tersedia)
-    // Ganti URL berikut dengan file suara "happy birthday" pilihan Anda.
-    const audio = new Audio('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3');
-    // Atau pakai file suara pendek happy birthday dari link yang valid.
-    // Karena tidak ada file suara spesifik, kita buat suara "beep" + synth bass sederhana.
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>✨ Selamat Ulang Tahun ✨</title>
     
-    // Alternatif: menggunakan Web Audio API untuk membuat nada bahagia
-    try {
-      const AudioContext = window.AudioContext || window.webkitAudioContext;
-      const ctx = new AudioContext();
-      const now = ctx.currentTime;
-      
-      // Nada: C - D - E - C (do re mi do)
-      const freqs = [261.63, 293.66, 329.63, 261.63];
-      const durations = [0.4, 0.4, 0.4, 0.8];
-      
-      freqs.forEach((freq, idx) => {
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-        osc.frequency.value = freq;
-        gain.gain.value = 0.3;
-        osc.start(now + idx * 0.5);
-        gain.gain.exponentialRampToValueAtTime(0.0001, now + idx * 0.5 + durations[idx]);
-        osc.stop(now + idx * 0.5 + durations[idx]);
-      });
-      
-      // Irama tambahan (do re mi fa sol)
-      setTimeout(() => {
-        const osc2 = ctx.createOscillator();
-        const gain2 = ctx.createGain();
-        osc2.connect(gain2);
-        gain2.connect(ctx.destination);
-        osc2.frequency.value = 392.00; // G
-        gain2.gain.value = 0.2;
-        osc2.start();
-        gain2.gain.exponentialRampToValueAtTime(0.0001, now + 2.2);
-        osc2.stop(now + 2.2);
-      }, 1800);
-      
-    } catch(e) {
-      console.log("Web Audio tidak didukung, fallback ke beep");
-      // Fallback sederhana
-      const beep = new Audio();
-      beep.src = "data:audio/wav;base64,U3RlYWx0aCB... (tidak praktis)";
-      alert("🔊 Selamat Ulang Tahun! (Suara tidak bisa diputar, tapi semangat tetap ada!)");
-    }
-  }
-  
-  // Event klik pada gambar/video
-  const triggerArea = document.getElementById('soundTrigger');
-  triggerArea.addEventListener('click', () => {
-    playBirthdaySound();
-    // Efek animasi visual
-    const img = document.getElementById('clickableImg');
-    img.style.transform = 'scale(0.95)';
-    setTimeout(() => img.style.transform = '', 200);
-  });
-  
-  // Tombol kedua juga memainkan suara
-  document.getElementById('playSoundBtn').addEventListener('click', playBirthdaySound);
-  
-  // Catatan: Jika Anda ingin menggunakan video TikTok yang sudah di-download, 
-  // ganti tag <img> dengan <video> dan tambahkan autoplay? Tidak disarankan autoplay suara.
-  // Untuk video, Anda bisa atur controls dan tetap bisa klik area untuk memutar suara terpisah.
-</script>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;700&family=Syncopate:wght@400;700&family=Playfair+Display:ital,wght@1,600&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- GSAP for Animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        syncopate: ['Syncopate', 'sans-serif'],
+                        space: ['Space Grotesk', 'sans-serif'],
+                        playfair: ['Playfair Display', 'serif'],
+                    },
+                    colors: {
+                        black: '#0a0a0a',
+                        white: '#f5f5f5',
+                        grey: '#333333'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #0a0a0a;
+            cursor: none;
+            touch-action: none;
+        }
+
+        /* Custom Cursor */
+        .cursor-dot, .cursor-outline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            z-index: 9999;
+            pointer-events: none;
+        }
+
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background-color: white;
+            mix-blend-mode: difference;
+        }
+
+        .cursor-outline {
+            width: 40px;
+            height: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+            mix-blend-mode: difference;
+        }
+
+        /* Glitch Effect */
+        .glitch-hover:hover {
+            animation: glitch-skew 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite;
+        }
+
+        @keyframes glitch-skew {
+            0% { transform: skew(0deg); }
+            20% { transform: skew(-10deg); }
+            40% { transform: skew(10deg); }
+            60% { transform: skew(-5deg); }
+            80% { transform: skew(5deg); }
+            100% { transform: skew(0deg); }
+        }
+
+        /* Grain Overlay */
+        .grain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 50;
+            opacity: 0.04;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* Card 3D Effect */
+        .perspective-1000 {
+            perspective: 1000px;
+        }
+
+        /* Hover effect for wish cards */
+        .wish-card {
+            transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        }
+        .wish-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: #000;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        /* Gift Box Styles */
+        .gift-container {
+            margin: 20px 0;
+        }
+        .gift-box {
+            position: relative;
+            width: 140px;
+            height: 140px;
+            margin: 0 auto;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        .gift-box:hover {
+            transform: scale(1.08);
+        }
+        .gift-box:active {
+            transform: scale(0.96);
+        }
+        .gift-body {
+            position: absolute;
+            bottom: 0;
+            width: 140px;
+            height: 100px;
+            background: linear-gradient(135deg, #1a1a1a, #333);
+            border: 2px solid #555;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        .gift-body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 100%;
+            background: #ffd700;
+            opacity: 0.4;
+        }
+        .gift-body::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            width: 100%;
+            height: 20px;
+            background: #ffd700;
+            opacity: 0.4;
+        }
+        .gift-lid {
+            position: absolute;
+            top: 0;
+            left: -5px;
+            width: 150px;
+            height: 42px;
+            background: linear-gradient(135deg, #222, #444);
+            border: 2px solid #666;
+            border-radius: 5px;
+            transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        .gift-lid::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 100%;
+            background: #ffd700;
+            opacity: 0.4;
+        }
+        .gift-ribbon {
+            position: absolute;
+            top: -18px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 38px;
+            height: 28px;
+        }
+        .gift-ribbon::before,
+        .gift-ribbon::after {
+            content: '';
+            position: absolute;
+            width: 22px;
+            height: 22px;
+            border: 3px solid #ffd700;
+            border-radius: 50% 50% 0 50%;
+            top: 0;
+            opacity: 0.8;
+        }
+        .gift-ribbon::before {
+            left: 0;
+            transform: rotate(-45deg);
+        }
+        .gift-ribbon::after {
+            right: 0;
+            transform: rotate(45deg);
+            border-radius: 50% 50% 50% 0;
+        }
+        .gift-box.opened .gift-lid {
+            transform: translateY(-75px) rotate(-25deg);
+            opacity: 0;
+        }
+
+        /* Video Modal */
+        .video-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+        .video-modal.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .video-container {
+            position: relative;
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+            transform: scale(0.9);
+            transition: transform 0.4s cubic-bezier(0.34, 1.2, 0.64, 1);
+        }
+        .video-modal.active .video-container {
+            transform: scale(1);
+        }
+        .video-container video {
+            width: 100%;
+            max-height: 80vh;
+            display: block;
+        }
+        .close-video {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            background: white;
+            color: black;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 20px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border: none;
+        }
+        .close-video:hover {
+            transform: scale(1.1);
+            background: #ffd700;
+        }
+        @media (max-width: 768px) {
+            .close-video {
+                top: -50px;
+                right: 5px;
+            }
+        }
+
+        /* Cake Section Styles */
+        .cake-section {
+            padding: 40px 20px;
+        }
+
+        .cake-container {
+            position: relative;
+            margin: 20px 0;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .cake-container:hover {
+            transform: scale(1.03);
+        }
+
+        .cake {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .cake-layer {
+            border-radius: 15px;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .cake-layer-1 {
+            width: 180px;
+            height: 50px;
+            background: linear-gradient(180deg, #2a2a2a, #1a1a1a);
+            border: 2px solid #444;
+            border-radius: 10px 10px 15px 15px;
+        }
+
+        .cake-layer-2 {
+            width: 230px;
+            height: 60px;
+            background: linear-gradient(180deg, #333, #222);
+            border: 2px solid #555;
+            margin-top: -2px;
+        }
+
+        .cake-layer-3 {
+            width: 280px;
+            height: 70px;
+            background: linear-gradient(180deg, #3a3a3a, #2a2a2a);
+            border: 2px solid #666;
+            border-radius: 15px 15px 20px 20px;
+            margin-top: -2px;
+        }
+
+        .cake-decoration {
+            position: absolute;
+            width: 100%;
+            height: 20px;
+            top: 0;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 0 15px;
+        }
+
+        .cake-dot {
+            width: 7px;
+            height: 7px;
+            background: #ffd700;
+            border-radius: 50%;
+            opacity: 0.7;
+        }
+
+        .candles {
+            display: flex;
+            gap: 15px;
+            margin-bottom: -5px;
+            position: relative;
+            z-index: 5;
+        }
+
+        .candle {
+            position: relative;
+            width: 7px;
+            height: 40px;
+            background: linear-gradient(180deg, #fff, #ccc);
+            border-radius: 3px 3px 2px 2px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .candle:hover {
+            transform: scaleY(1.1);
+        }
+
+        .candle .flame {
+            position: absolute;
+            top: -18px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 11px;
+            height: 18px;
+            background: radial-gradient(ellipse at bottom, #fff 0%, #ffdd00 30%, #ff6600 60%, transparent 100%);
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            animation: flicker 0.5s ease-in-out infinite alternate;
+            filter: blur(0.5px);
+            box-shadow: 0 0 15px 5px rgba(255, 200, 0, 0.3);
+        }
+
+        .candle .flame.blown {
+            animation: blowOut 0.5s ease forwards;
+        }
+
+        .candle .wick {
+            position: absolute;
+            top: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 7px;
+            background: #333;
+            border-radius: 1px;
+        }
+
+        .smoke {
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 20px;
+            background: linear-gradient(to top, rgba(255,255,255,0.3), transparent);
+            border-radius: 50%;
+            opacity: 0;
+            animation: smokeRise 2s ease forwards;
+        }
+
+        .cake-plate {
+            width: 320px;
+            height: 18px;
+            background: linear-gradient(180deg, #444, #222);
+            border-radius: 50%;
+            margin-top: 5px;
+            border: 2px solid #555;
+        }
+
+        @keyframes flicker {
+            0% { transform: translateX(-50%) scale(1) rotate(-2deg); opacity: 1; }
+            50% { transform: translateX(-50%) scale(1.1) rotate(2deg); opacity: 0.9; }
+            100% { transform: translateX(-50%) scale(0.95) rotate(-1deg); opacity: 1; }
+        }
+
+        @keyframes blowOut {
+            0% { transform: translateX(-50%) scale(1); opacity: 1; }
+            50% { transform: translateX(-50%) scale(1.5); opacity: 0.5; }
+            100% { transform: translateX(-50%) scale(0); opacity: 0; }
+        }
+
+        @keyframes smokeRise {
+            0% { opacity: 0.6; transform: translateX(-50%) translateY(0) scale(1); }
+            100% { opacity: 0; transform: translateX(-50%) translateY(-40px) scale(2); }
+        }
+
+        @keyframes fadeUp {
+            0% { opacity: 0; transform: translateX(-50%) translateY(20px); }
+            20% { opacity: 1; transform: translateX(-50%) translateY(0); }
+            80% { opacity: 1; transform: translateX(-50%) translateY(0); }
+            100% { opacity: 0; transform: translateX(-50%) translateY(-40px); }
+        }
+    </style>
+</head>
+<body class="text-white font-space selection:bg-white selection:text-black antialiased">
+
+    <!-- Custom Cursor -->
+    <div class="cursor-dot" id="cursor-dot"></div>
+    <div class="cursor-outline" id="cursor-outline"></div>
+    
+    <!-- Grain Effect -->
+    <div class="grain"></div>
+
+    <!-- Video Modal -->
+    <div id="video-modal" class="video-modal">
+        <div class="video-container">
+            <button class="close-video" id="close-video-btn">✕</button>
+            <video id="0531.mp4" controls autoplay muted>
+                <source src="0531.mp4" type="video/mp4">
+                <source src="0531.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div id="app" class="relative w-full h-full flex items-center justify-center transition-colors duration-700">
+        
+        <!-- Interactive Layer (Initial Taps) -->
+        <div id="click-layer" class="absolute inset-0 z-40 cursor-pointer flex flex-col items-center justify-center">
+            <div id="seq-1" class="absolute font-syncopate text-2xl md:text-5xl tracking-[0.5em] uppercase opacity-100 transition-opacity duration-500 text-center px-4">
+                Halooo 
+                <p>Tekan aja</p>
+            </div>
+            <div id="seq-2" class="absolute font-syncopate text-3xl md:text-6xl tracking-[0.3em] uppercase opacity-0 scale-90 text-center px-4">
+                Are you ready?
+                <p>awassss</p>
+            </div>
+            <div id="seq-3" class="absolute font-syncopate text-4xl md:text-7xl tracking-[0.2em] uppercase opacity-0 scale-90 text-center px-4">
+                Here it comes
+                <p>Tengo Lah Tuha</p>
+            </div>
+
+            <div class="absolute bottom-10 flex space-x-2">
+                <div id="dot-1" class="w-2 h-2 rounded-full bg-white opacity-100 transition-all duration-300"></div>
+                <div id="dot-2" class="w-2 h-2 rounded-full bg-white opacity-20 transition-all duration-300"></div>
+                <div id="dot-3" class="w-2 h-2 rounded-full bg-white opacity-20 transition-all duration-300"></div>
+            </div>
+        </div>
+
+        <!-- Final Reveal Screen 1: Main Greeting -->
+        <div id="final-screen" class="absolute inset-0 z-30 bg-white text-black opacity-0 pointer-events-none overflow-y-auto" style="display: flex; flex-direction: column;">
+            
+            <div class="absolute top-10 left-10 w-32 h-32 border border-black rounded-full opacity-20 animate-[spin_10s_linear_infinite]"></div>
+            <div class="absolute bottom-10 right-10 w-40 h-40 border border-black opacity-20 animate-[spin_15s_linear_infinite_reverse]"></div>
+            <div class="absolute top-1/4 right-1/4 w-10 h-10 bg-black opacity-5 rounded-sm rotate-45"></div>
+            <div class="absolute bottom-1/4 left-1/4 w-16 h-16 bg-black opacity-5 rounded-full"></div>
+
+            <!-- Hero Section -->
+            <div class="relative z-10 flex flex-col items-center justify-center pt-12 pb-6 px-6">
+                <div id="greeting-card" class="flex flex-col items-center text-center perspective-1000 max-w-4xl mx-auto">
+                    <p class="font-space tracking-[0.3em] text-sm md:text-base uppercase mb-4 text-grey opacity-0 translate-y-4" id="final-sub">✨ ✨</p>
+                    
+                    <h1 class="font-syncopate font-bold text-5xl md:text-8xl lg:text-9xl leading-none uppercase text-black glitch-hover transition-all duration-300 cursor-pointer opacity-0 scale-110" id="final-title">
+                        Selamat<br>Ulang<br>Tahun
+                    </h1>
+                    
+                    <div class="mt-6 max-w-lg opacity-0 translate-y-4" id="final-msg">
+                        <p class="font-playfair text-xl md:text-2xl italic text-grey">
+                            dari Si dia yg B aja Dan katanya nerd (padahal enga berak)
+                        </p>
+                        <p class="font-space text-base md:text-lg font-light text-grey leading-relaxed mt-4">
+                            semoga menjadi lebih baik lagi kedepannya, selalu sehat, panjang umur, dimudahkan segala urusan, diampuni dosanya, dan makin cakep lagi :3
+                            <p>(jangan ah dah tua juga cakep mulu entar yg lain kaga kebagian cakepnya)</p>
+                        </p>
+                        <div class="w-full h-px bg-black mt-6 mb-6 opacity-20"></div>
+                        <p class="font-syncopate text-xs tracking-widest font-bold flex items-center justify-center gap-2 cursor-pointer">
+                            kelik aja ada lagi paling ucapan yakan, disini mah buat hefun aja gambar vidoe or somting 
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gift Box Section (Tombol Hadiah - Memunculkan Video) -->
+            <div class="relative z-10 gift-container flex flex-col items-center justify-center py-4">
+                <h2 class="font-playfair text-xl md:text-2xl text-black mb-3">🎁 something hor hor hor 🎁</h2>
+                <p class="text-grey text-sm mb-4">AWAS kaget asli dah kata gw mah</p>
+                
+                <div class="gift-box" id="gift-box" onclick="openGiftVideo()">
+                    <div class="gift-lid">
+                        <div class="gift-ribbon"></div>
+                    </div>
+                    <div class="gift-body"></div>
+                </div>
+            </div>
+
+            <!-- Cake Section -->
+            <div class="relative z-10 cake-section flex flex-col items-center justify-center pb-16">
+                <h2 class="font-playfair text-2xl md:text-3xl text-black mb-2">Tiup Lilinnya(ga di tiup juga sih di kelik)</h2>
+                <p class="text-grey text-sm mb-4">satu satu jangan ngespam, awas crash</p>
+
+                <div class="cake-container">
+                    <div class="cake">
+                        <div class="candles">
+                            <div class="candle" onclick="blowCandle(this)">
+                                <div class="wick"></div>
+                                <div class="flame"></div>
+                            </div>
+                            <div class="candle" onclick="blowCandle(this)">
+                                <div class="wick"></div>
+                                <div class="flame"></div>
+                            </div>
+                            <div class="candle" onclick="blowCandle(this)">
+                                <div class="wick"></div>
+                                <div class="flame"></div>
+                            </div>
+                            <div class="candle" onclick="blowCandle(this)">
+                                <div class="wick"></div>
+                                <div class="flame"></div>
+                            </div>
+                            <div class="candle" onclick="blowCandle(this)">
+                                <div class="wick"></div>
+                                <div class="flame"></div>
+                            </div>
+                        </div>
+                        <div class="cake-layer cake-layer-1">
+                            <div class="cake-decoration">
+                                <div class="cake-dot"></div><div class="cake-dot"></div><div class="cake-dot"></div><div class="cake-dot"></div><div class="cake-dot"></div>
+                            </div>
+                        </div>
+                        <div class="cake-layer cake-layer-2">
+                            <div class="cake-decoration">
+                                <div class="cake-dot"></div><div class="cake-dot"></div><div class="cake-dot"></div><div class="cake-dot"></div><div class="cake-dot"></div><div class="cake-dot"></div><div class="cake-dot"></div>
+                            </div>
+                        </div>
+                        <div class="cake-layer cake-layer-3">
+                            <div class="cake-decoration">
+                                <div class="cake-dot"></div><div class="cake-dot"></div><div class="cake-dot"></div><div class="cake-dot"></div><div class="cake-dot"></div><div class="cake-dot"></div><div class="cake-dot"></div><div class="cake-dot"></div><div class="cake-dot"></div>
+                            </div>
+                        </div>
+                        <div class="cake-plate"></div>
+                    </div>
+                </div>
+                <p class="text-grey/60 text-xs mt-4">🎂 HBD HBD HBD HBD 🎂</p>
+            </div>
+        </div>
+
+        <!-- Final Reveal Screen 2: Full Wishes Page -->
+        <div id="wishes-screen" class="absolute inset-0 z-20 bg-white text-black opacity-0 pointer-events-none overflow-y-auto p-6 md:p-10" style="display: flex; flex-direction: column;">
+            
+            <div class="flex justify-between items-center mb-8 pb-4 border-b border-black/10 sticky top-0 bg-white z-10">
+                <button id="back-btn" class="flex items-center gap-2 text-black/60 hover:text-black transition-colors font-space text-sm tracking-wider">
+                    ← Kembali
+                </button>
+                <div class="w-12 h-12 rounded-full bg-black/5 flex items-center justify-center">
+                    <span class="text-xl">🎂</span>
+                </div>
+            </div>
+
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <div class="inline-block px-4 py-1 rounded-full bg-black/5 text-black/60 text-xs tracking-wider mb-4">
+                    ♥ Special Delivery ♥
+                </div>
+                <h1 class="font-playfair text-5xl md:text-7xl text-black mb-6 italic">
+                    Untukmu yang<br>menemani ku bermain
+                </h1>
+                <div class="w-20 h-px bg-black/20 mx-auto my-8"></div>
+                <p class="font-space text-grey text-lg md:text-xl leading-relaxed max-w-xl mx-auto">
+                    "Semoga setiap harimu dipenuhi kebahagiaan, setiap mimpimu menjadi kenyataan, 
+                    dan setiap langkahmu membawa kebaikan. Istirahat juga BTW,"
+                </p>
+            </div>
+
+            <div class="max-w-5xl mx-auto w-full">
+                <h2 class="font-syncopate text-2xl md:text-3xl text-center mb-10 tracking-wider">✨ entah lah, hal random yg blm aku tau form you ✨</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+                    <div class="wish-card bg-white border border-black/10 rounded-2xl p-8 text-center shadow-sm cursor-pointer transition-all">
+                        <div class="text-5xl mb-4">🌟</div>
+                        <h3 class="font-syncopate text-lg font-bold mb-3">Kesehatan & Panjang Umur</h3>
+                        <p class="text-grey text-sm leading-relaxed">Semoga selalu diberikan kesehatan, kekuatan, dan umur yang panjang untuk menjalani hari-hari penuh makna.</p>
+                    </div>
+                    <div class="wish-card bg-white border border-black/10 rounded-2xl p-8 text-center shadow-sm cursor-pointer transition-all">
+                        <div class="text-5xl mb-4">💫</div>
+                        <h3 class="font-syncopate text-lg font-bold mb-3">Kesuksesan & Kemudahan</h3>
+                        <p class="text-grey text-sm leading-relaxed">Semoga setiap usaha dan kerja kerasmu berbuah manis, dimudahkan segala urusan, dan sukses selalu.</p>
+                    </div>
+                    <div class="wish-card bg-white border border-black/10 rounded-2xl p-8 text-center shadow-sm cursor-pointer transition-all">
+                        <div class="text-5xl mb-4">💝</div>
+                        <h3 class="font-syncopate text-lg font-bold mb-3">Kebahagiaan & Cinta</h3>
+                        <p class="text-grey text-sm leading-relaxed">Semoga hatimu selalu dipenuhi cinta, tawa, dan kebahagiaan yang tak terhingga setiap harinya.</p>
+                    </div>
+                </div>
+
+                <div class="bg-black/5 rounded-2xl p-8 md:p-10 text-center mb-16">
+                    <div class="text-4xl mb-3">🎁</div>
+                    <p class="font-playfair text-2xl md:text-3xl italic text-black mb-4">
+                        "Terima kasih telah berbagi cerita denganku, aku menantikan dongenmu itu lagi hhhhhh"
+                    </p>
+                    <p class="text-grey text-sm tracking-wider">- from someone -</p>
+                </div>
+
+                <div class="text-center mb-12">
+                    <button id="celebrate-btn" class="px-8 py-4 bg-black text-white rounded-full font-syncopate text-sm tracking-wider hover:bg-grey transition-all duration-300 shadow-lg">
+                        Tekan awas kaget
+                    </button>
+                </div>
+
+                <div class="text-center pt-8 border-t border-black/10">
+                    <p class="text-black/40 text-xs tracking-widest">✨ Selamat Ulang Tahun, ratih teteh rati or what ✨</p>
+                    <p class="text-black/30 text-[10px] mt-2">Dibuat dengan kegabutan masa masa libur sekolah, ckckckck</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Custom Cursor Logic
+        const cursorDot = document.getElementById('cursor-dot');
+        const cursorOutline = document.getElementById('cursor-outline');
+        
+        window.addEventListener('mousemove', (e) => {
+            const posX = e.clientX;
+            const posY = e.clientY;
+            cursorDot.style.left = `${posX}px`;
+            cursorDot.style.top = `${posY}px`;
+            cursorOutline.animate({
+                left: `${posX}px`,
+                top: `${posY}px`
+            }, { duration: 150, fill: "forwards" });
+        });
+
+        document.querySelectorAll('a, button, .cursor-pointer, [onclick]').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursorOutline.style.width = '60px';
+                cursorOutline.style.height = '60px';
+                cursorOutline.style.backgroundColor = 'rgba(255,255,255,0.1)';
+            });
+            el.addEventListener('mouseleave', () => {
+                cursorOutline.style.width = '40px';
+                cursorOutline.style.height = '40px';
+                cursorOutline.style.backgroundColor = 'transparent';
+            });
+        });
+
+        // Video Modal Functions
+        const videoModal = document.getElementById('video-modal');
+        const giftVideo = document.getElementById('gift-video');
+        const closeVideoBtn = document.getElementById('close-video-btn');
+
+        window.openGiftVideo = function() {
+            const giftBox = document.getElementById('gift-box');
+            if (!giftBox.classList.contains('opened')) {
+                giftBox.classList.add('opened');
+                
+                // Confetti burst
+                const rect = giftBox.getBoundingClientRect();
+                for (let i = 0; i < 3; i++) {
+                    setTimeout(() => {
+                        confetti({ particleCount: 60, spread: 80, origin: { x: (rect.left + rect.width / 2) / window.innerWidth, y: (rect.top + rect.height / 2) / window.innerHeight }, colors: ['#000000', '#ffffff', '#ffd700'] });
+                    }, i * 150);
+                }
+            }
+            
+            // Tampilkan modal video
+            videoModal.classList.add('active');
+            giftVideo.play().catch(e => console.log('Video autoplay error:', e));
+        };
+
+        closeVideoBtn.addEventListener('click', () => {
+            videoModal.classList.remove('active');
+            giftVideo.pause();
+            giftVideo.currentTime = 0;
+        });
+
+        videoModal.addEventListener('click', (e) => {
+            if (e.target === videoModal) {
+                videoModal.classList.remove('active');
+                giftVideo.pause();
+                giftVideo.currentTime = 0;
+            }
+        });
+
+        // Sequence Logic (Tap 3x)
+        let step = 0;
+        const clickLayer = document.getElementById('click-layer');
+        const app = document.getElementById('app');
+        
+        const seq1 = document.getElementById('seq-1');
+        const seq2 = document.getElementById('seq-2');
+        const seq3 = document.getElementById('seq-3');
+        const dots = [document.getElementById('dot-1'), document.getElementById('dot-2'), document.getElementById('dot-3')];
+
+        clickLayer.addEventListener('click', () => {
+            step++;
+            if (step === 1) {
+                gsap.to(seq1, { opacity: 0, y: -20, duration: 0.5 });
+                gsap.to(seq2, { opacity: 1, scale: 1, y: 0, duration: 0.5, delay: 0.3 });
+                dots[0].style.opacity = '0.2';
+                dots[1].style.opacity = '1';
+                dots[1].style.transform = 'scale(1.2)';
+                setTimeout(() => { dots[1].style.transform = 'scale(1)'; }, 300);
+            } 
+            else if (step === 2) {
+                gsap.to(seq2, { opacity: 0, y: -20, duration: 0.5 });
+                gsap.to(seq3, { opacity: 1, scale: 1, y: 0, duration: 0.5, delay: 0.3 });
+                dots[1].style.opacity = '0.2';
+                dots[2].style.opacity = '1';
+                dots[2].style.transform = 'scale(1.2)';
+                setTimeout(() => { dots[2].style.transform = 'scale(1)'; }, 300);
+            }
+            else if (step === 3) {
+                clickLayer.style.pointerEvents = 'none';
+                gsap.to(clickLayer, { opacity: 0, duration: 0.3 });
+                triggerReveal();
+            }
+        });
+
+        // Cake Logic
+        let candlesBlown = 0;
+        const totalCandles = 5;
+
+        window.blowCandle = function(candleEl) {
+            const flame = candleEl.querySelector('.flame');
+            if (flame.classList.contains('blown')) return;
+            flame.classList.add('blown');
+            const smoke = document.createElement('div');
+            smoke.className = 'smoke';
+            candleEl.appendChild(smoke);
+            candlesBlown++;
+            const rect = candleEl.getBoundingClientRect();
+            confetti({ particleCount: 12, startVelocity: 15, spread: 40, origin: { x: (rect.left + rect.width / 2) / window.innerWidth, y: (rect.top + rect.height / 2) / window.innerHeight }, colors: ['#ffffff', '#ffd700'] });
+            
+            if (candlesBlown === totalCandles) {
+                setTimeout(() => {
+                    for (let i = 0; i < 5; i++) {
+                        setTimeout(() => confetti({ particleCount: 40, spread: 80, origin: { x: Math.random(), y: Math.random() * 0.4 }, colors: ['#000000', '#ffffff', '#ffd700'] }), i * 200);
+                    }
+                    const celebration = document.createElement('div');
+                    celebration.innerHTML = '🎉 Selamat Ulang Tahun, Rati 🎉';
+                    celebration.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);background:#ffd700;color:#000;padding:25px 45px;border-radius:20px;font-family:Playfair Display;font-size:24px;font-weight:bold;z-index:200;transition:all 0.5s cubic-bezier(0.68,-0.55,0.265,1.55);text-align:center;white-space:nowrap;box-shadow:0 20px 40px rgba(0,0,0,0.3);';
+                    document.body.appendChild(celebration);
+                    setTimeout(() => celebration.style.transform = 'translate(-50%,-50%) scale(1)', 100);
+                    setTimeout(() => { celebration.style.transform = 'translate(-50%,-50%) scale(0)'; setTimeout(() => celebration.remove(), 500); }, 3500);
+                }, 500);
+            }
+        };
+
+        function triggerReveal() {
+            const finalScreen = document.getElementById('final-screen');
+            app.classList.remove('bg-black');
+            app.classList.add('bg-white');
+            cursorDot.style.backgroundColor = 'black';
+            cursorOutline.style.borderColor = 'rgba(0,0,0,0.5)';
+            finalScreen.style.opacity = '1';
+            finalScreen.style.pointerEvents = 'auto';
+            fireBlackAndWhiteConfetti();
+            const tl = gsap.timeline();
+            tl.to('#final-title', { opacity: 1, scale: 1, duration: 1.2, ease: "power4.out", delay: 0.2 })
+              .to('#final-sub', { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }, "-=0.8")
+              .to('#final-msg', { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }, "-=0.6");
+            initParallax();
+            
+            const finalTitle = document.getElementById('final-title');
+            const finalMsgDiv = document.getElementById('final-msg');
+            const goToWishes = () => {
+                const wishesScreen = document.getElementById('wishes-screen');
+                finalScreen.style.pointerEvents = 'none';
+                gsap.to(finalScreen, { opacity: 0, duration: 0.5, onComplete: () => {
+                    wishesScreen.style.opacity = '1';
+                    wishesScreen.style.pointerEvents = 'auto';
+                    fireCelebrationConfetti();
+                    gsap.fromTo('#wishes-screen .wish-card', { opacity: 0, y: 30 }, { opacity: 1, y: 0, stagger: 0.15, duration: 0.6, ease: "power2.out" });
+                }});
+            };
+            finalTitle.addEventListener('click', goToWishes);
+            finalMsgDiv.addEventListener('click', goToWishes);
+        }
+
+        const backBtn = document.getElementById('back-btn');
+        const wishesScreen = document.getElementById('wishes-screen');
+        const finalScreen = document.getElementById('final-screen');
+        
+        backBtn.addEventListener('click', () => {
+            wishesScreen.style.pointerEvents = 'none';
+            gsap.to(wishesScreen, { opacity: 0, duration: 0.5, onComplete: () => {
+                finalScreen.style.pointerEvents = 'auto';
+                gsap.to(finalScreen, { opacity: 1, duration: 0.5 });
+            }});
+        });
+
+        const celebrateBtn = document.getElementById('celebrate-btn');
+        celebrateBtn.addEventListener('click', () => {
+            fireHeavyConfetti();
+            const msg = document.createElement('div');
+            msg.innerHTML = '🎉🎂 Selamat Ulang Tahun, Rati teteh rati or what! 🎂🎉';
+            msg.style.cssText = `position:fixed;bottom:30%;left:50%;transform:translateX(-50%);background:white;color:black;padding:16px 32px;border-radius:60px;font-family:'Syncopate',sans-serif;font-weight:bold;font-size:1rem;z-index:200;box-shadow:0 10px 40px rgba(0,0,0,0.2);white-space:nowrap;animation:fadeUp 1.5s ease forwards;pointer-events:none;`;
+            document.body.appendChild(msg);
+            setTimeout(() => msg.remove(), 2500);
+        });
+
+        function fireBlackAndWhiteConfetti() {
+            const duration = 3000;
+            const animationEnd = Date.now() + duration;
+            const bwColors = ['#000000', '#ffffff', '#333333', '#888888'];
+            const interval = setInterval(() => {
+                if (Date.now() > animationEnd) return clearInterval(interval);
+                confetti({ particleCount: 40, startVelocity: 30, spread: 360, origin: { x: Math.random(), y: Math.random() - 0.2 }, colors: bwColors });
+            }, 200);
+        }
+
+        function fireCelebrationConfetti() {
+            confetti({ particleCount: 150, spread: 100, origin: { y: 0.6 }, colors: ['#000000', '#ffffff', '#ffd700'] });
+            setTimeout(() => confetti({ particleCount: 100, spread: 120, origin: { y: 0.5, x: 0.2 } }), 200);
+            setTimeout(() => confetti({ particleCount: 100, spread: 120, origin: { y: 0.5, x: 0.8 } }), 200);
+        }
+
+        function fireHeavyConfetti() {
+            let end = Date.now() + 2000;
+            let colors = ['#000000', '#ffffff', '#ffd700'];
+            (function frame() {
+                confetti({ particleCount: 8, angle: 60, spread: 55, origin: { x: 0 }, colors });
+                confetti({ particleCount: 8, angle: 120, spread: 55, origin: { x: 1 }, colors });
+                if (Date.now() < end) requestAnimationFrame(frame);
+            }());
+        }
+
+        function initParallax() {
+            const card = document.getElementById('greeting-card');
+            const container = document.getElementById('final-screen');
+            if (!card || !container) return;
+            container.addEventListener('mousemove', (e) => {
+                const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
+                const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
+                card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+            });
+            container.addEventListener('mouseleave', () => {
+                card.style.transform = `rotateY(0deg) rotateX(0deg)`;
+                card.style.transition = 'transform 0.5s ease';
+            });
+            container.addEventListener('mouseenter', () => { card.style.transition = 'none'; });
+        }
+    </script>
 </body>
 </html>
